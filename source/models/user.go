@@ -15,7 +15,7 @@ type User struct {
     gorm.Model
     Name        string  `gorm:"type:varchar(50);not null" json:"name"`
     Email       string  `gorm:"type:varchar(100);unique_index;not null" json:"email"`
-    Password    string  `gorm:"type:text;not null"`
+    Password    string  `gorm:"type:text;not null" json:"-"`
 }
 
 func (u *User) BeforeSave() (err error) {
@@ -29,4 +29,8 @@ func (u *User) BeforeSave() (err error) {
         }
     }
     return err
+}
+
+func (u *User) Compare(attempt string) (err error) {
+    return bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(attempt))
 }
