@@ -9,7 +9,6 @@ package validators
 import (
     "github.com/gin-gonic/gin"
     "github.com/gin-gonic/gin/binding"
-    "net/http"
 )
 
 // https://godoc.org/gopkg.in/go-playground/validator.v8
@@ -21,12 +20,11 @@ type userCreate struct {
 }
 
 type userGetId struct {
-    Id  string  `uri:"id" binding:"required,numeric,min=1,max=5"`
+    Id  uint  `uri:"id" binding:"required,min=0,max=9999"`
 }
 
-func errorHandling(c *gin.Context, msg string) {
-    c.JSON(http.StatusBadRequest, gin.H{ "error": msg })
-    c.Abort()
+type userDeleteId struct {
+    Id  uint  `uri:"id" binding:"required,min=0,max=9999"`
 }
 
 
@@ -42,6 +40,15 @@ func ValidateUserCreate(c *gin.Context) {
 // ValidateUserGetId
 func ValidateUserGetId(c *gin.Context) {
     var v userGetId
+
+    if err := c.ShouldBindUri(&v); err != nil {
+        errorHandling(c, err.Error())
+    }
+}
+
+// ValidateUserDeleteId
+func ValidateUserDeleteId(c *gin.Context) {
+    var v userDeleteId
 
     if err := c.ShouldBindUri(&v); err != nil {
         errorHandling(c, err.Error())
