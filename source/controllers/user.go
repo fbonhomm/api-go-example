@@ -38,3 +38,14 @@ func UserGetId(c *gin.Context) {
         c.JSON(http.StatusOK, gin.H{ "item": user })
     }
 }
+
+// UserDeleteId
+func UserDeleteId(c *gin.Context) {
+    user := models.User{}
+
+    if err := config.Db.First(&user, c.Param("id")).Delete(&user).Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{ "error": err.Error() })
+    } else {
+        c.JSON(http.StatusOK, gin.H{ "item": user })
+    }
+}
