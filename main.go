@@ -28,6 +28,7 @@ func main() {
 
     routerEngine := gin.Default()
 
+    routers.Auth(routerEngine)
     routers.User(routerEngine)
     // for route := range routers {
     //     route(routerEngine)
