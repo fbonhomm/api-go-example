@@ -14,9 +14,11 @@ import (
     "testing"
 )
 
-// TestGetId
-func TestGetId(t *testing.T) {
-    resp, err := http.Get("http://localhost:3000/users/15")
+// TestDeleteId
+func TestDeleteId(t *testing.T) {
+    client := &http.Client{}
+    req, err := http.NewRequest("DELETE", "http://localhost:3000/users/14", nil)
+    resp, err := client.Do(req)
 
     if err != nil {
         log.Panic(err)
