@@ -20,7 +20,7 @@ var PublicKeyRefresh *ecdsa.PublicKey
 var PrivateKeyRefresh *ecdsa.PrivateKey
 var err error
 
-func init() {
+func Jwt() {
     var tmp []byte
 
     tmp, _ = ioutil.ReadFile(ROOT + "/jwt/access.public.pem")
