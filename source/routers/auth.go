@@ -8,6 +8,7 @@ package routers
 
 import (
     "github.com/fbonhomm/api-go/source/controllers"
+    "github.com/fbonhomm/api-go/source/middlewares"
     "github.com/fbonhomm/api-go/source/validators"
     "github.com/gin-gonic/gin"
 )
@@ -17,5 +18,5 @@ func Auth(router *gin.Engine) {
     route := router.Group("/auth")
 
     route.POST("/", validators.ValidateAuthLogin, controllers.AuthLogin)
-    // route.POST("/refresh", validators.ValidateUserGetId, controllers.UserGetId)
+    route.POST("/refresh", middlewares.AuthRefresh, validators.ValidateAuthRefresh, controllers.AuthRefresh)
 }
