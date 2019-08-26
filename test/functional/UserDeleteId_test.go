@@ -16,9 +16,10 @@ import (
 
 // TestDeleteId
 func TestDeleteId(t *testing.T) {
-    client := &http.Client{}
     req, err := http.NewRequest("DELETE", "http://localhost:3000/users/14", nil)
-    resp, err := client.Do(req)
+    req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+    req.Header.Add("Authorization", `Bearer ` + Tokens.AccessToken)
+    resp, err := Client.Do(req)
 
     if err != nil {
         log.Panic(err)

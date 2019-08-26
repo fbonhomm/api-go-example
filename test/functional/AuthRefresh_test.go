@@ -16,11 +16,11 @@ import (
     "testing"
 )
 
-// TestLogin
-func TestLogin(t *testing.T) {
-    var data = url.Values{"email": {"example@test.com"}, "password": {"12345678"}}
+// TestRefreshToken
+func TestRefreshToken(t *testing.T) {
+    var data = url.Values{"refresh_token": {Tokens.RefreshToken}}
 
-    req, err := http.NewRequest("POST", "http://localhost:3000/auth", strings.NewReader(data.Encode()))
+    req, err := http.NewRequest("POST", "http://localhost:3000/auth/refresh", strings.NewReader(data.Encode()))
     req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
     resp, err := Client.Do(req)
 

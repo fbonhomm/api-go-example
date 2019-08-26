@@ -12,13 +12,18 @@ import (
     "log"
     "net/http"
     "net/url"
+    "strings"
     "testing"
 )
 
 // TestUserPost
 func TestUserPost(t *testing.T) {
-    resp, err := http.PostForm("http://localhost:3000/users", url.Values{
-        "name": {"test"}, "email": {"example@test.com"}, "password": {"12345678"}})
+    var data = url.Values{"name": {"test"}, "email": {"example@test.com"}, "password": {"12345678"}}
+
+    req, err := http.NewRequest("POST", "http://localhost:3000/users", strings.NewReader(data.Encode()))
+    req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+    req.Header.Add("Authorization", `Bearer ` + Tokens.AccessToken)
+    resp, err := Client.Do(req)
 
     if err != nil {
         log.Panic(err)

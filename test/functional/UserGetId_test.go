@@ -16,7 +16,10 @@ import (
 
 // TestGetId
 func TestGetId(t *testing.T) {
-    resp, err := http.Get("http://localhost:3000/users/15")
+    req, err := http.NewRequest("GET", "http://localhost:3000/users/15", nil)
+    req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+    req.Header.Add("Authorization", `Bearer ` + Tokens.AccessToken)
+    resp, err := Client.Do(req)
 
     if err != nil {
         log.Panic(err)
