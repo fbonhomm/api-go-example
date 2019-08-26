@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go v0.44.3 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20190806190131-db2462fef53b // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.4.0
 	github.com/google/go-cmp v0.3.1 // indirect
@@ -24,7 +25,8 @@ require (
 	golang.org/x/crypto v0.0.0-20190820162420-60c769a6c586
 	golang.org/x/mobile v0.0.0-20190814143026-e8b3e6111d02 // indirect
 	golang.org/x/net v0.0.0-20190813141303-74dc4d7220e7 // indirect
-	golang.org/x/tools v0.0.0-20190823170909-c4a336ef6a2f // indirect
+	golang.org/x/sys v0.0.0-20190825160603-fb81701db80f // indirect
+	golang.org/x/tools v0.0.0-20190826060629-95c3470cfb70 // indirect
 	google.golang.org/genproto v0.0.0-20190819201941-24fa4b261c55 // indirect
 	google.golang.org/grpc v1.23.0 // indirect
 	honnef.co/go/tools v0.0.1-2019.2.2 // indirect
