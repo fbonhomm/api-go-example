@@ -8,16 +8,21 @@ package middlewares
 
 import (
     "fmt"
-    jwt "github.com/dgrijalva/jwt-go"
+    "github.com/dgrijalva/jwt-go"
     "github.com/fbonhomm/api-go/source/libs"
     "github.com/fbonhomm/api-go/source/services"
     "github.com/gin-gonic/gin"
     "net/http"
-    "os"
 )
 
 func Auth(c *gin.Context) {
-    tokenString := libs.GetToken(c)
+    tokenString, err := libs.GetToken(c)
+
+    if err != nil {
+        c.JSON(http.StatusUnauthorized, gin.H{ "error": err })
+        c.Abort()
+        return
+    }
 
     token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
         if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok {
@@ -28,14 +33,45 @@ func Auth(c *gin.Context) {
     })
 
     if err != nil {
-        c.JSON(http.StatusUnauthorized, gin.H{ "error": err })
+        c.JSON(http.StatusUnauthorized, gin.H{ "error": "Token not conform." })
         c.Abort()
+        return
     }
 
     if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
         c.Set("Token", claims)
     } else {
-        c.JSON(http.StatusUnauthorized, gin.H{ "error": err })
+        c.JSON(http.StatusUnauthorized, gin.H{ "error": "Token not conform." })
+        c.Abort()
+    }
+}
+
+func AuthRefresh(c *gin.Context) {
+    tokenString := c.PostForm("refresh_token")
+
+    token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+        if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok {
+            return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+        }
+
+        return services.PublicKeyRefresh, nil
+    })
+
+    if err != nil {
+        c.JSON(http.StatusUnauthorized, gin.H{ "error": "Token not conform." })
+        c.Abort()
+        return
+    }
+
+    if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+        var decode = make(map[string]string, 10)
+
+        for key, value := range claims {
+            decode[key] = fmt.Sprintf("%v", value)
+        }
+        c.Set("Token", decode)
+    } else {
+        c.JSON(http.StatusUnauthorized, gin.H{ "error": "Token not conform." })
         c.Abort()
     }
 }
