@@ -16,6 +16,10 @@ type authLogin struct {
     Password    string  `form:"password" binding:"required,min=8,max=50"`
 }
 
+type authRefresh struct {
+    RefreshToken    string  `form:"refresh_token" binding:"required,min=100,max=1000"`
+}
+
 
 // ValidateAuthLogin
 func ValidateAuthLogin(c *gin.Context) {
@@ -23,5 +27,16 @@ func ValidateAuthLogin(c *gin.Context) {
 
     if err := c.ShouldBindWith(&v, binding.FormPost); err != nil {
         errorHandling(c, err.Error())
+        return
+    }
+}
+
+// ValidateAuthRefresh
+func ValidateAuthRefresh(c *gin.Context) {
+    var v authRefresh
+
+    if err := c.ShouldBindWith(&v, binding.FormPost); err != nil {
+        errorHandling(c, err.Error())
+        return
     }
 }
