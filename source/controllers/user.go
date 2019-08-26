@@ -7,8 +7,8 @@
 package controllers
 
 import (
-    "github.com/fbonhomm/api-go/source/config"
     "github.com/fbonhomm/api-go/source/models"
+    "github.com/fbonhomm/api-go/source/services"
     "github.com/gin-gonic/gin"
     "net/http"
 )
@@ -21,7 +21,7 @@ func UserCreate(c *gin.Context) {
         Password: c.PostForm("password"),
     }
 
-    if err := config.Db.Create(&user).Error; err != nil {
+    if err := services.Db.Create(&user).Error; err != nil {
         c.JSON(http.StatusConflict, gin.H{ "error": err.Error() })
     } else {
         c.JSON(http.StatusCreated, gin.H{ "item": user })
@@ -32,7 +32,7 @@ func UserCreate(c *gin.Context) {
 func UserGetId(c *gin.Context) {
     user := models.User{}
 
-    if err := config.Db.First(&user, c.Param("id")).Error; err != nil {
+    if err := services.Db.First(&user, c.Param("id")).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{ "error": err.Error() })
     } else {
         c.JSON(http.StatusOK, gin.H{ "item": user })
@@ -43,7 +43,7 @@ func UserGetId(c *gin.Context) {
 func UserDeleteId(c *gin.Context) {
     user := models.User{}
 
-    if err := config.Db.First(&user, c.Param("id")).Delete(&user).Error; err != nil {
+    if err := services.Db.First(&user, c.Param("id")).Delete(&user).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{ "error": err.Error() })
     } else {
         c.JSON(http.StatusOK, gin.H{ "item": user })
