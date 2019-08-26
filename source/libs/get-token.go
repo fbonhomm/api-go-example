@@ -7,20 +7,19 @@
 package libs
 
 import (
+    "errors"
     "github.com/gin-gonic/gin"
-    "net/http"
     "strings"
 )
 
 // GetToken
-func GetToken(c *gin.Context) string {
+func GetToken(c *gin.Context) (string, error) {
     var reqToken = c.Request.Header.Get("Authorization")
     var splitToken = strings.Split(reqToken, "Bearer")
 
     if len(splitToken) != 2 {
-        c.JSON(http.StatusUnauthorized, gin.H{ "error": "Token not conform." })
-        c.Abort()
+        return "", errors.New("Token not provided.")
     }
 
-    return strings.TrimSpace(splitToken[1])
+    return strings.TrimSpace(splitToken[1]), nil
 }
