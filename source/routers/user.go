@@ -17,7 +17,7 @@ import (
 func User(router *gin.Engine) {
     route := router.Group("/users")
 
-    route.POST("/", middlewares.Auth, validators.ValidateUserCreate, controllers.UserCreate)
+    route.POST("", middlewares.Auth, validators.ValidateUserCreate, controllers.UserCreate)
     route.GET("/:id", middlewares.Auth, validators.ValidateUserGetId, controllers.UserGetId)
     route.DELETE("/:id", middlewares.Auth, validators.ValidateUserDeleteId, controllers.UserDeleteId)
 }

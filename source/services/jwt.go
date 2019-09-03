@@ -8,11 +8,12 @@ package services
 
 import (
     "crypto/ecdsa"
-    "github.com/dgrijalva/jwt-go"
     "io/ioutil"
+    "os"
+
+    "github.com/dgrijalva/jwt-go"
 )
 
-const ROOT = "./source/services"
 
 var PublicKeyAccess *ecdsa.PublicKey
 var PrivateKeyAccess *ecdsa.PrivateKey
@@ -22,16 +23,17 @@ var err error
 
 func Jwt() {
     var tmp []byte
+    var root = os.Getenv("ROOT") + "/source/services"
 
-    tmp, _ = ioutil.ReadFile(ROOT + "/jwt/access.public.pem")
+    tmp, err = ioutil.ReadFile(root + "/jwt/access.public.pem")
     PublicKeyAccess, _ = jwt.ParseECPublicKeyFromPEM(tmp)
 
-    tmp, _ = ioutil.ReadFile(ROOT + "/jwt/access.private.pem")
+    tmp, _ = ioutil.ReadFile(root + "/jwt/access.private.pem")
     PrivateKeyAccess, _ = jwt.ParseECPrivateKeyFromPEM(tmp)
 
-    tmp, _ = ioutil.ReadFile(ROOT + "/jwt/refresh.public.pem")
+    tmp, _ = ioutil.ReadFile(root + "/jwt/refresh.public.pem")
     PublicKeyRefresh, _ = jwt.ParseECPublicKeyFromPEM(tmp)
 
-    tmp, _ = ioutil.ReadFile(ROOT + "/jwt/refresh.private.pem")
+    tmp, _ = ioutil.ReadFile(root + "/jwt/refresh.private.pem")
     PrivateKeyRefresh, _ = jwt.ParseECPrivateKeyFromPEM(tmp)
 }

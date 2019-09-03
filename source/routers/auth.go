@@ -17,6 +17,6 @@ import (
 func Auth(router *gin.Engine) {
     route := router.Group("/auth")
 
-    route.POST("/", validators.ValidateAuthLogin, controllers.AuthLogin)
+    route.POST("", validators.ValidateAuthLogin, controllers.AuthLogin)
     route.POST("/refresh", middlewares.AuthRefresh, validators.ValidateAuthRefresh, controllers.AuthRefresh)
 }

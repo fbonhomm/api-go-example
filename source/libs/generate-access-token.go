@@ -7,10 +7,12 @@
 package libs
 
 import (
+    "time"
+
     "github.com/dgrijalva/jwt-go"
+
     "github.com/fbonhomm/api-go/source/models"
     "github.com/fbonhomm/api-go/source/services"
-    "time"
 )
 
 // GenerateAccessToken

@@ -11,6 +11,11 @@ import (
     "golang.org/x/crypto/bcrypt"
 )
 
+// ID        uint `gorm:"primary_key"`
+// CreatedAt time.Time
+// UpdatedAt time.Time
+// DeletedAt *time.Time `sql:"index"`
+
 type User struct {
     gorm.Model
     Name        string  `gorm:"type:varchar(50);not null" json:"name"`

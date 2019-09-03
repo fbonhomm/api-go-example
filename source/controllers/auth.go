@@ -7,72 +7,59 @@
 package controllers
 
 import (
+    "net/http"
+
+    "github.com/gin-gonic/gin"
+
     "github.com/fbonhomm/api-go/source/libs"
     "github.com/fbonhomm/api-go/source/models"
     "github.com/fbonhomm/api-go/source/services"
-    "github.com/gin-gonic/gin"
-    "net/http"
 )
 
 // AuthLogin
 func AuthLogin(c *gin.Context) {
-    user := models.User{
+    var accessToken string
+    var refreshToken string
+    var err error
+    var user = models.User{
         Email: c.PostForm("email"),
     }
 
-    if err := services.Db.First(&user).Error; err != nil {
+    if err = services.Db.First(&user).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-        return
-    }
-    if err := user.Compare(c.PostForm("password")); err != nil {
+    } else if err = user.Compare(c.PostForm("password")); err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{ "error": err.Error() })
-        return
+    } else if accessToken, err = libs.GenerateAccessToken(user); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+    } else if refreshToken, err = libs.GenerateRefreshToken(user); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+    } else {
+        c.JSON(http.StatusOK, gin.H{
+            "access_token": accessToken,
+            "refresh_token": refreshToken,
+        })
     }
-
-    accessToken, err := libs.GenerateAccessToken(user)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{ "error": err.Error() })
-        return
-    }
-
-    refreshToken, err := libs.GenerateRefreshToken(user)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{ "error": err.Error() })
-        return
-    }
-
-    c.JSON(http.StatusOK, gin.H{
-        "access_token": accessToken,
-        "refresh_token": refreshToken,
-    })
 }
 
 // AuthRefresh
 func AuthRefresh(c *gin.Context) {
-    user := models.User{}
+    var accessToken string
+    var refreshToken string
+    var err error
+    var user = models.User{}
 
-    token, _ := c.Get("Token")
-    info := token.(map[string]string)
+    token, _ := GetToken(c)
 
-    if err := services.Db.First(&user, info["id"]).Error; err != nil {
+    if err = services.Db.First(&user, token["id"]).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-        return
+    } else if accessToken, err = libs.GenerateAccessToken(user); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+    } else if refreshToken, err = libs.GenerateRefreshToken(user); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+    } else {
+        c.JSON(http.StatusOK, gin.H{
+            "access_token": accessToken,
+            "refresh_token": refreshToken,
+        })
     }
-
-    accessToken, err := libs.GenerateAccessToken(user)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{ "error": err.Error() })
-        return
-    }
-
-    refreshToken, err := libs.GenerateRefreshToken(user)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{ "error": err.Error() })
-        return
-    }
-
-    c.JSON(http.StatusOK, gin.H{
-        "access_token": accessToken,
-        "refresh_token": refreshToken,
-    })
 }
