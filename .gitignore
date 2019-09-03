@@ -13,3 +13,7 @@
 
 # jetbrain
 .idea
+
+# enviroment variable
+.env
+.env.testing
