@@ -4,24 +4,21 @@
  * Licence: MIT
  */
 
-package fonctional
+package functional
 
 import (
     "fmt"
     "io/ioutil"
     "log"
     "net/http"
-    "net/url"
-    "strings"
     "testing"
 )
 
-// TestLogin
-func TestLogin(t *testing.T) {
-    var data = url.Values{"email": {"example@test.com"}, "password": {"12345678"}}
-
-    req, err := http.NewRequest("POST", "http://localhost:3000/auth", strings.NewReader(data.Encode()))
+// TestGetId
+func TestGetId(t *testing.T) {
+    req, err := http.NewRequest("GET", "http://localhost:3000/users/15", nil)
     req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+    req.Header.Add("Authorization", `Bearer ` + Tokens.AccessToken)
     resp, err := Client.Do(req)
 
     if err != nil {

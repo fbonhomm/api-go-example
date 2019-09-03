@@ -4,7 +4,7 @@
  * Licence: MIT
  */
 
-package fonctional
+package functional
 
 import (
     "fmt"
@@ -16,12 +16,13 @@ import (
     "testing"
 )
 
-// TestRefreshToken
-func TestRefreshToken(t *testing.T) {
-    var data = url.Values{"refresh_token": {Tokens.RefreshToken}}
+// TestUserPost
+func TestUserPost(t *testing.T) {
+    var data = url.Values{"name": {"test1"}, "email": {"example@test1.com"}, "password": {"12345678"}}
 
-    req, err := http.NewRequest("POST", "http://localhost:3000/auth/refresh", strings.NewReader(data.Encode()))
+    req, err := http.NewRequest("POST", "http://localhost:3000/users", strings.NewReader(data.Encode()))
     req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+    req.Header.Add("Authorization", `Bearer ` + Tokens.AccessToken)
     resp, err := Client.Do(req)
 
     if err != nil {
