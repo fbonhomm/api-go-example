@@ -7,17 +7,17 @@
 package main
 
 import (
+    "log"
+
+    "github.com/joho/godotenv"
+
     "github.com/fbonhomm/api-go/source/routers"
     "github.com/fbonhomm/api-go/source/services"
-    "github.com/gin-contrib/cors"
-    "github.com/gin-gonic/gin"
-    "github.com/joho/godotenv"
-    "log"
-    "time"
 )
 
 // init
 func init() {
+    // Initialize environment variable contained in .env
     if err := godotenv.Load(); err != nil {
         log.Fatal("No .env file found")
     }
@@ -31,23 +31,13 @@ func main() {
     // Initialize Jwt
     services.Jwt()
 
-    routerEngine := gin.Default()
+    // Initialize router
+    var routerEngine = routers.RouterInitialize()
 
-    routerEngine.Use(cors.New(cors.Config{
-        AllowOrigins:     []string{"http://localhost:3000"},
-        AllowMethods:     []string{"OPTIONS", "GET", "POST", "PUT", "DELETE"},
-        AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"},
-        ExposeHeaders:    []string{"Content-Length"},
-        AllowCredentials: true,
-        MaxAge: 12 * time.Hour,
-    }))
+    // Launch API
+    if err := routerEngine.Run(); err != nil {
+        log.Fatal(err)
+    }
 
-    routers.Auth(routerEngine)
-    routers.User(routerEngine)
-    // for route := range routers {
-    //     route(routerEngine)
-    // }
-
-    routerEngine.Run()
     services.Db.Close()
 }
