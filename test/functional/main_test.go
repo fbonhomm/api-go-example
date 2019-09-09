@@ -35,7 +35,9 @@ var Tokens Token
 func getToken() {
     var body map[string]interface{}
     var err error
-    var data = url.Values{"email": {"example@test.com"}, "password": {"12345678"}}
+
+    var user = fixture.DefaultUser()
+    var data = url.Values{"email": {user["email"]}, "password": {user["password"]}}
 
     if body, err = RequestApiJson("POST", BaseUrl + "/auth", data, false); err != nil {
         log.Fatal(err)
@@ -46,11 +48,9 @@ func getToken() {
 }
 
 func setupDB() {
-    user := fixture.User()
+    var user = fixture.DefaultUser()
 
-    if err := services.Db.Create(&user).Error; err != nil {
-        log.Fatal(err)
-    }
+    CreateUser(user)
 }
 
 func removeDB() {

@@ -7,31 +7,29 @@
 package functional
 
 import (
-    "fmt"
-    "io/ioutil"
-    "log"
-    "net/http"
     "testing"
+
+    "github.com/stretchr/testify/assert"
+
+    "github.com/fbonhomm/api-go/test/fixture"
 )
 
 // TestGetId
 func TestGetId(t *testing.T) {
-    req, err := http.NewRequest("GET", "http://localhost:3000/users/15", nil)
-    req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-    req.Header.Add("Authorization", `Bearer ` + Tokens.AccessToken)
-    resp, err := Client.Do(req)
+    var body map[string]interface{}
+    var item map[string]interface{}
+    var err error
+    var user = fixture.DefaultUser()
 
-    if err != nil {
-        log.Panic(err)
+    if body, err = RequestApiJson("GET", BaseUrl + "/users/1", nil, true); err != nil {
+        t.Fatal(err)
     }
 
-    body, err := ioutil.ReadAll(resp.Body)
-
-    if nil != err {
-        log.Panic(err)
-    }
-
-    fmt.Println(string(body[:]))
-
-    resp.Body.Close()
+    item = body["item"].(map[string]interface{})
+    assert.Equal(t, float64(1), item["ID"])
+    assert.Equal(t, user["name"], item["name"])
+    assert.Equal(t, user["email"], item["email"])
+    assert.Nil(t, item["password"])
+    assert.NotNil(t, item["CreatedAt"])
+    assert.NotNil(t, item["UpdatedAt"])
 }

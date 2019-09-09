@@ -8,12 +8,15 @@ package functional
 
 import (
     "encoding/json"
+    "log"
     "net/http"
     "net/http/httptest"
     "net/url"
     "strings"
 
+    "github.com/fbonhomm/api-go/source/models"
     "github.com/fbonhomm/api-go/source/routers"
+    "github.com/fbonhomm/api-go/source/services"
 )
 
 // RequestApiJson
@@ -43,4 +46,19 @@ func RequestApiJson(method, url string, data url.Values, auth bool) (map[string]
     }
 
     return result, err
+}
+
+// CreateUser
+func CreateUser(data map[string]string) models.User {
+    var user = models.User{
+        Name: data["name"],
+        Email: data["email"],
+        Password: data["password"],
+    }
+
+    if err := services.Db.Create(&user).Error; err != nil {
+        log.Fatal(err)
+    }
+
+    return user
 }

@@ -7,35 +7,28 @@
 package functional
 
 import (
-    "fmt"
-    "io/ioutil"
-    "log"
-    "net/http"
     "net/url"
-    "strings"
     "testing"
+
+    "github.com/stretchr/testify/assert"
 )
 
 // TestUserPost
 func TestUserPost(t *testing.T) {
+    var body map[string]interface{}
+    var item map[string]interface{}
+    var err error
     var data = url.Values{"name": {"test1"}, "email": {"example@test1.com"}, "password": {"12345678"}}
 
-    req, err := http.NewRequest("POST", "http://localhost:3000/users", strings.NewReader(data.Encode()))
-    req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-    req.Header.Add("Authorization", `Bearer ` + Tokens.AccessToken)
-    resp, err := Client.Do(req)
-
-    if err != nil {
-        log.Panic(err)
+    if body, err = RequestApiJson("POST", BaseUrl + "/users", data, true); err != nil {
+        t.Fatal(err)
     }
 
-    body, err := ioutil.ReadAll(resp.Body)
-
-    if nil != err {
-        log.Panic(err)
-    }
-
-    fmt.Println(string(body[:]))
-
-    resp.Body.Close()
+    item = body["item"].(map[string]interface{})
+    assert.Equal(t, data.Get("name"), item["name"])
+    assert.Equal(t, data.Get("email"), item["email"])
+    assert.Nil(t, item["password"])
+    assert.NotNil(t, item["ID"])
+    assert.NotNil(t, item["CreatedAt"])
+    assert.NotNil(t, item["UpdatedAt"])
 }
