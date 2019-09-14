@@ -7,10 +7,11 @@
 package controllers
 
 import (
-    "github.com/fbonhomm/api-go/source/models"
-    "github.com/fbonhomm/api-go/source/services"
     "github.com/gin-gonic/gin"
     "net/http"
+
+    "github.com/fbonhomm/api-go/source/models"
+    "github.com/fbonhomm/api-go/source/services"
 )
 
 // UserCreate
