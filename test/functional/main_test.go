@@ -1,14 +1,13 @@
 /**
  * Created by fbonhomm
  * Email: flo-github@outlook.fr
- * Licence: MIT
+ * License: MIT
  */
 
 package functional
 
 import (
     "log"
-    "net/http"
     "net/url"
     "os"
     "testing"
@@ -28,7 +27,6 @@ type Token struct {
 const RegexToken = `^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$`
 
 var BaseUrl string
-var Client = &http.Client{}
 var Tokens Token
 
 

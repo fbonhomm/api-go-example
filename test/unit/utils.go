@@ -1,3 +1,9 @@
+/**
+ * Created by fbonhomm
+ * Email: flo-github@outlook.fr
+ * License: MIT
+ */
+
 package unit
 
 import (
