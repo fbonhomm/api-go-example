@@ -1,5 +1,5 @@
-# api-go
-Api in Go with go-gonic, gorm and testify
+# Api-Go-Example
+Api example in Go with go-gonic, gorm and testify
 
 ## Before Usage
 * Create `.env` and `.env.testing` from `.env.example`
@@ -13,7 +13,7 @@ Api in Go with go-gonic, gorm and testify
 ## Technology
     - Go
     - Gin-Gonic
-    - gorm
+    - Gorm
     - CORS
     - Testify
     - GolintCI-Lint
