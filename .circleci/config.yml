@@ -1,0 +1,27 @@
+version: 2
+jobs:
+  build:
+    working_directory: /go/src/github.com/fbonhomm/api-go
+    docker:
+      - image: circleci/golang:1.13
+    steps:
+      - checkout
+      - run:
+          name: install all dependencies
+          command: 'go get ./...'
+      - run:
+          name: install golangci-lint and testify
+          command: 'go get -u github.com/golangci/golangci-lint/cmd/golangci-lint;go get -u github.com/stretchr/testify'
+      - run:
+          name: linter
+          command: '/go/bin/golangci-lint run -c ./.golangci.yml ./source/...'
+      - run:
+          name: build
+          command: 'go build'
+      - run:
+          name: unit test
+          command: 'go test -v ./test/unit/*.go'
+      - run:
+          name: functional test
+          command: 'go test -v ./test/functional/*.go'
+
