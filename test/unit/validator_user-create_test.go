@@ -15,7 +15,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/fbonhomm/api-go/source/validators"
+	"github.com/fbonhomm/api-go-example/source/validators"
 )
 
 // TestShouldSuccessValidatorUserCreate

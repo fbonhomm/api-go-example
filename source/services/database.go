@@ -15,7 +15,7 @@ import (
 	// initialize dialects
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
-	"github.com/fbonhomm/api-go/source/models"
+	"github.com/fbonhomm/api-go-example/source/models"
 )
 
 var Db *gorm.DB

@@ -12,8 +12,8 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 
-	"github.com/fbonhomm/api-go/source/models"
-	"github.com/fbonhomm/api-go/source/services"
+	"github.com/fbonhomm/api-go-example/source/models"
+	"github.com/fbonhomm/api-go-example/source/services"
 )
 
 // GenerateAccessToken

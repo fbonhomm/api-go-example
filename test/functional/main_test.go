@@ -15,8 +15,8 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/joho/godotenv"
 
-    "github.com/fbonhomm/api-go/source/services"
-    "github.com/fbonhomm/api-go/test/fixture"
+    "github.com/fbonhomm/api-go-example/source/services"
+    "github.com/fbonhomm/api-go-example/test/fixture"
 )
 
 type Token struct {

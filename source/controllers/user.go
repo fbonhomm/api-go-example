@@ -11,8 +11,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/fbonhomm/api-go/source/models"
-	"github.com/fbonhomm/api-go/source/services"
+	"github.com/fbonhomm/api-go-example/source/models"
+	"github.com/fbonhomm/api-go-example/source/services"
 )
 
 // UserCreate
