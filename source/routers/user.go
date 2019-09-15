@@ -1,23 +1,24 @@
 /**
  * Created by fbonhomm
  * Email: flo-github@outlook.fr
- * Licence: MIT
+ * License: MIT
  */
 
 package routers
 
 import (
-    "github.com/fbonhomm/api-go/source/controllers"
-    "github.com/fbonhomm/api-go/source/middlewares"
-    "github.com/fbonhomm/api-go/source/validators"
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
+
+	"github.com/fbonhomm/api-go/source/controllers"
+	"github.com/fbonhomm/api-go/source/middlewares"
+	"github.com/fbonhomm/api-go/source/validators"
 )
 
 // main
 func User(router *gin.Engine) {
-    route := router.Group("/users")
+	route := router.Group("/users")
 
-    route.POST("", middlewares.Auth, validators.ValidateUserCreate, controllers.UserCreate)
-    route.GET("/:id", middlewares.Auth, validators.ValidateUserGetId, controllers.UserGetId)
-    route.DELETE("/:id", middlewares.Auth, validators.ValidateUserDeleteId, controllers.UserDeleteId)
+	route.POST("", middlewares.Auth, validators.ValidateUserCreate, controllers.UserCreate)
+	route.GET("/:id", middlewares.Auth, validators.ValidateUserGetID, controllers.UserGetID)
+	route.DELETE("/:id", middlewares.Auth, validators.ValidateUserDeleteID, controllers.UserDeleteID)
 }

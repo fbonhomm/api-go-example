@@ -1,39 +1,56 @@
 /**
  * Created by fbonhomm
  * Email: flo-github@outlook.fr
- * Licence: MIT
+ * License: MIT
  */
 
 package services
 
 import (
-    "crypto/ecdsa"
-    "io/ioutil"
-    "os"
+	"log"
+	"os"
 
-    "github.com/dgrijalva/jwt-go"
+	"crypto/ecdsa"
+	"io/ioutil"
+
+	"github.com/dgrijalva/jwt-go"
 )
-
 
 var PublicKeyAccess *ecdsa.PublicKey
 var PrivateKeyAccess *ecdsa.PrivateKey
 var PublicKeyRefresh *ecdsa.PublicKey
 var PrivateKeyRefresh *ecdsa.PrivateKey
-var err error
 
 func Jwt() {
-    var tmp []byte
-    var root = os.Getenv("ROOT") + "/source/services"
+	var tmp []byte
+	var err error
+	var root = os.Getenv("ROOT") + "/source/services"
 
-    tmp, err = ioutil.ReadFile(root + "/jwt/access.public.pem")
-    PublicKeyAccess, _ = jwt.ParseECPublicKeyFromPEM(tmp)
+	if tmp, err = ioutil.ReadFile(root + "/jwt/access.public.pem"); err != nil {
+		log.Fatal(err)
+	}
+	if PublicKeyAccess, err = jwt.ParseECPublicKeyFromPEM(tmp); err != nil {
+		log.Fatal(err)
+	}
 
-    tmp, _ = ioutil.ReadFile(root + "/jwt/access.private.pem")
-    PrivateKeyAccess, _ = jwt.ParseECPrivateKeyFromPEM(tmp)
+	if tmp, err = ioutil.ReadFile(root + "/jwt/access.private.pem"); err != nil {
+		log.Fatal(err)
+	}
+	if PrivateKeyAccess, err = jwt.ParseECPrivateKeyFromPEM(tmp); err != nil {
+		log.Fatal(err)
+	}
 
-    tmp, _ = ioutil.ReadFile(root + "/jwt/refresh.public.pem")
-    PublicKeyRefresh, _ = jwt.ParseECPublicKeyFromPEM(tmp)
+	if tmp, err = ioutil.ReadFile(root + "/jwt/refresh.public.pem"); err != nil {
+		log.Fatal(err)
+	}
+	if PublicKeyRefresh, err = jwt.ParseECPublicKeyFromPEM(tmp); err != nil {
+		log.Fatal(err)
+	}
 
-    tmp, _ = ioutil.ReadFile(root + "/jwt/refresh.private.pem")
-    PrivateKeyRefresh, _ = jwt.ParseECPrivateKeyFromPEM(tmp)
+	if tmp, err = ioutil.ReadFile(root + "/jwt/refresh.private.pem"); err != nil {
+		log.Fatal(err)
+	}
+	if PrivateKeyRefresh, err = jwt.ParseECPrivateKeyFromPEM(tmp); err != nil {
+		log.Fatal(err)
+	}
 }

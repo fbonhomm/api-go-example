@@ -1,27 +1,36 @@
 /**
  * Created by fbonhomm
  * Email: flo-github@outlook.fr
- * Licence: MIT
+ * License: MIT
  */
 
 package libs
 
 import (
-    "github.com/dgrijalva/jwt-go"
-    "github.com/fbonhomm/api-go/source/models"
-    "github.com/fbonhomm/api-go/source/services"
-    "time"
+	"errors"
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
+
+	"github.com/fbonhomm/api-go/source/models"
+	"github.com/fbonhomm/api-go/source/services"
 )
 
 // GenerateRefreshToken
-func GenerateRefreshToken(user models.User) (refreshToken string, err error) {
-    token := jwt.New(jwt.SigningMethodES384)
+func GenerateRefreshToken(user *models.User) (refreshToken string, err error) {
+	var ok bool
+	var token *jwt.Token
+	var claims jwt.MapClaims
 
-    claims := token.Claims.(jwt.MapClaims)
-    claims["id"] = user.ID
-    claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
+	token = jwt.New(jwt.SigningMethodES384)
 
-    refreshToken, err = token.SignedString(services.PrivateKeyRefresh)
+	if claims, ok = token.Claims.(jwt.MapClaims); !ok {
+		return refreshToken, errors.New("refresh token is not valid")
+	}
+	claims["id"] = user.ID
+	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
-    return refreshToken, err
+	refreshToken, err = token.SignedString(services.PrivateKeyRefresh)
+
+	return refreshToken, err
 }

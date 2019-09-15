@@ -1,36 +1,35 @@
 /**
  * Created by fbonhomm
  * Email: flo-github@outlook.fr
- * Licence: MIT
+ * License: MIT
  */
 
 package routers
 
 import (
-    "os"
-    "time"
+	"os"
+	"time"
 
-    "github.com/gin-contrib/cors"
-    "github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
 // RouterInitialize
 // Initialize all api route
 func RouterInitialize() *gin.Engine {
-    routerEngine := gin.Default()
+	routerEngine := gin.Default()
 
-    routerEngine.Use(cors.New(cors.Config{
-        AllowOrigins:     []string{os.Getenv("HOST") + ":" + os.Getenv("PORT")},
-        AllowMethods:     []string{"OPTIONS", "GET", "POST", "PUT", "DELETE"},
-        AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"},
-        ExposeHeaders:    []string{"Content-Length"},
-        AllowCredentials: true,
-        MaxAge:           12 * time.Hour,
-    }))
+	routerEngine.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{os.Getenv("HOST") + ":" + os.Getenv("PORT")},
+		AllowMethods:     []string{"OPTIONS", "GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
-    User(routerEngine)
-    Auth(routerEngine)
+	User(routerEngine)
+	Auth(routerEngine)
 
-    return routerEngine
+	return routerEngine
 }
-

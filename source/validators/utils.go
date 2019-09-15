@@ -1,18 +1,18 @@
 /**
  * Created by fbonhomm
  * Email: flo-github@outlook.fr
- * Licence: MIT
+ * License: MIT
  */
 
 package validators
 
 import (
-    "net/http"
+	"net/http"
 
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 func errorHandling(c *gin.Context, msg string) {
-    c.JSON(http.StatusBadRequest, gin.H{ "error": msg })
-    c.Abort()
+	c.JSON(http.StatusBadRequest, gin.H{"error": msg})
+	c.Abort()
 }

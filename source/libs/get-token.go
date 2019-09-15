@@ -1,25 +1,26 @@
 /**
  * Created by fbonhomm
  * Email: flo-github@outlook.fr
- * Licence: MIT
+ * License: MIT
  */
 
 package libs
 
 import (
-    "errors"
-    "github.com/gin-gonic/gin"
-    "strings"
+	"errors"
+	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 // GetToken
 func GetToken(c *gin.Context) (string, error) {
-    var reqToken = c.Request.Header.Get("Authorization")
-    var splitToken = strings.Split(reqToken, "Bearer")
+	var reqToken = c.Request.Header.Get("Authorization")
+	var splitToken = strings.Split(reqToken, "Bearer")
 
-    if len(splitToken) != 2 {
-        return "", errors.New("Token not provided.")
-    }
+	if len(splitToken) != 2 {
+		return "", errors.New("token not provided")
+	}
 
-    return strings.TrimSpace(splitToken[1]), nil
+	return strings.TrimSpace(splitToken[1]), nil
 }

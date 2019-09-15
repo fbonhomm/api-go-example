@@ -1,31 +1,38 @@
 /**
  * Created by fbonhomm
  * Email: flo-github@outlook.fr
- * Licence: MIT
+ * License: MIT
  */
 
 package libs
 
 import (
-    "time"
+	"errors"
+	"time"
 
-    "github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go"
 
-    "github.com/fbonhomm/api-go/source/models"
-    "github.com/fbonhomm/api-go/source/services"
+	"github.com/fbonhomm/api-go/source/models"
+	"github.com/fbonhomm/api-go/source/services"
 )
 
 // GenerateAccessToken
-func GenerateAccessToken(user models.User) (accessToken string, err error) {
-    token := jwt.New(jwt.SigningMethodES256)
+func GenerateAccessToken(user *models.User) (accessToken string, err error) {
+	var ok bool
+	var token *jwt.Token
+	var claims jwt.MapClaims
 
-    claims := token.Claims.(jwt.MapClaims)
-    claims["id"] = user.ID
-    claims["name"] = user.Name
-    claims["email"] = user.Email
-    claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
+	token = jwt.New(jwt.SigningMethodES256)
 
-    accessToken, err = token.SignedString(services.PrivateKeyAccess)
+	if claims, ok = token.Claims.(jwt.MapClaims); !ok {
+		return accessToken, errors.New("access token is not valid")
+	}
+	claims["id"] = user.ID
+	claims["name"] = user.Name
+	claims["email"] = user.Email
+	claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 
-    return accessToken, err
+	accessToken, err = token.SignedString(services.PrivateKeyAccess)
+
+	return accessToken, err
 }
